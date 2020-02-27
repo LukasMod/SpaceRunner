@@ -1,17 +1,17 @@
-package pl.my.game;
+package application;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import pl.my.game.view.ViewManager;
+import view.ViewManager;
 
 public class Main extends Application {
     @Override
-    public void start(Stage stage){
-        try{
+    public void start(Stage stage) {
+        try {
             ViewManager manager = new ViewManager();
             stage = manager.getMainStage();
+            stage.setResizable(false);
+            stage.setTitle("SPACE RUNNER THE GAME");
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
