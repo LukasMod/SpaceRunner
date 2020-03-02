@@ -10,15 +10,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.SpaceRunnerButton;
-import model.SpaceRunnerSubScene;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewManager {
 
-    private final String FONT_PATH = "kenvector_future.ttf";
+    private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
 
     public static final int WIDTH = 900;
     public static final int HEIGHT = 680;
@@ -38,6 +37,8 @@ public class ViewManager {
 
     List<SpaceRunnerButton> menuButtons;
 
+    List<ShipPicker> shipPickerList;
+    private SHIP choosenShip;
 
     public ViewManager() {
         menuButtons = new ArrayList<>();
@@ -71,11 +72,66 @@ public class ViewManager {
 
         scoresSubScene = new SpaceRunnerSubScene();
         mainPane.getChildren().add(scoresSubScene);
-
-        shipChooserSubScene = new SpaceRunnerSubScene();
-        mainPane.getChildren().add(shipChooserSubScene);
+//          osobna metoda:
+//      shipChooserSubScene = new SpaceRunnerSubScene();
+//      mainPane.getChildren().add(shipChooserSubScene);
+        createShipChooserSubScene();
 
     }
+
+    private void createShipChooserSubScene() {
+        shipChooserSubScene = new SpaceRunnerSubScene();
+        mainPane.getChildren().add(shipChooserSubScene);
+        InfoLabel chooseShipLabel = new InfoLabel("CHOOSE YOUR SHIP");
+        chooseShipLabel.setLayoutX(110);
+        chooseShipLabel.setLayoutY(25);
+        shipChooserSubScene.getPane().getChildren().add(chooseShipLabel);
+        shipChooserSubScene.getPane().getChildren().add(createShipsToChoosen());
+        shipChooserSubScene.getPane().getChildren().add(createButtonToStart());
+    }
+
+    private HBox createShipsToChoosen() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        shipPickerList = new ArrayList<>();
+        for (SHIP ship : SHIP.values()) {
+            ShipPicker shipToPick = new ShipPicker(ship);
+            shipPickerList.add(shipToPick);
+            hBox.getChildren().add(shipToPick);
+            shipToPick.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    for (ShipPicker ship : shipPickerList) {
+                        ship.setIsCircleChoosen(false);
+                    }
+                    shipToPick.setIsCircleChoosen(true);
+                    choosenShip = shipToPick.getShip();
+                }
+            });
+        }
+        hBox.setLayoutX(300 - (118 * 2));
+        hBox.setLayoutY(100);
+        return hBox;
+    }
+
+    private SpaceRunnerButton createButtonToStart() {
+        SpaceRunnerButton startButton = new SpaceRunnerButton("START");
+        startButton.setLayoutX(350);
+        startButton.setLayoutY(300);
+
+        startButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (choosenShip  != null) {
+                    GameViewManager gameViewManager = new GameViewManager();
+                    gameViewManager.createNewGame(mainStage, choosenShip);
+                }
+            }
+        });
+
+        return startButton;
+    }
+
 
     public Stage getMainStage() {
         return mainStage;

@@ -39,19 +39,16 @@ public class SpaceRunnerSubScene extends SubScene {
 
         if(isHidden) {
            translateTransition.setToX(ViewManager.MENU_BUTTONS_START_X - ViewManager.WIDTH + 210);
-//           translateTransition.setToX(-500);
             isHidden = false;
-            System.out.println("widoczne");
         } else {
             translateTransition.setToX(0);
             isHidden = true;
-            System.out.println("ukrycie");
-
         }
         translateTransition.play();
-
-
     }
 
+    public AnchorPane getPane() {
+        return (AnchorPane) this.getRoot();
+    }
 
 }
