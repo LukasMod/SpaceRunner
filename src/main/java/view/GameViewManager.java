@@ -53,6 +53,10 @@ public class GameViewManager {
     private final static int SHIP_RADIUS = 27;
     private final static int METEOR_RADIUS = 20;
 
+    //weapons and shooting
+    private final static String LASER_BLUE_IMAGE = "weapons/laserBlue03.png";
+    private ImageView laserBlue;
+    private boolean isSpacePressed = false;
 
     public GameViewManager() {
         initializeStage();
@@ -69,6 +73,8 @@ public class GameViewManager {
                     isLeftKeyPressed = true;
                 } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                     isRightKeyPressed = true;
+                } else if (keyEvent.getCode() == KeyCode.S) {
+                    isSpacePressed = true;
                 }
             }
         });
@@ -79,6 +85,8 @@ public class GameViewManager {
                     isLeftKeyPressed = false;
                 } else if (keyEvent.getCode() == KeyCode.RIGHT) {
                     isRightKeyPressed = false;
+                } else if (keyEvent.getCode() == KeyCode.S) {
+                    isSpacePressed = false;
                 }
             }
         });
@@ -121,7 +129,6 @@ public class GameViewManager {
             gamePane.getChildren().add(playerLifes[i]);
         }
 
-
         brownMeteors = new ImageView[3];
         for (int i = 0; i < brownMeteors.length; i++) {
             brownMeteors[i] = new ImageView(METEOR_BROWN_IMAGE);
@@ -136,12 +143,35 @@ public class GameViewManager {
         }
     }
 
+    private void createShooting() {
+        laserBlue = new ImageView(LASER_BLUE_IMAGE);
+        laserBlue.setLayoutY(ship.getLayoutY()-10);
+        laserBlue.setLayoutX(ship.getLayoutX() + (ship.getImage().getWidth() / 2));
+        laserBlue.setVisible(false);
+        gamePane.getChildren().add(laserBlue);
+    }
+
+    private void shooting() {
+        if (isSpacePressed) {
+            createShooting();
+            laserBlue.setVisible(true);
+            isSpacePressed = false;
+        }
+    }
+
+    private void moveShooting() {
+        shooting();
+        if (laserBlue != null) {
+            laserBlue.setLayoutY(laserBlue.getLayoutY() - 40);
+        }
+    }
+
     private void setNewElementPosition(ImageView image) {
         image.setLayoutX(randomPositionGenerator.nextInt(370));
         image.setLayoutY(-(randomPositionGenerator.nextInt(3200) + 600));
     }
 
-    private void moveGameELements() {
+    private void moveGameElements() {
 
         star.setLayoutY(star.getLayoutY() + 5);
 
@@ -160,8 +190,6 @@ public class GameViewManager {
         if (star.getLayoutY() > 1200) {
             setNewElementPosition(star);
         }
-
-
         for (int i = 0; i < brownMeteors.length; i++) {
             if (brownMeteors[i].getLayoutY() > 900) {
                 setNewElementPosition(brownMeteors[i]);
@@ -187,7 +215,8 @@ public class GameViewManager {
             @Override
             public void handle(long l) {
                 moveBackground();
-                moveGameELements();
+                moveGameElements();
+                moveShooting();
                 checkIfElementsAreBehindTheShipAndRelocate();
                 checkIfElementsCollide();
                 moveShip();
@@ -289,7 +318,6 @@ public class GameViewManager {
 
     }
 
-
     private void removeLife() {
         gamePane.getChildren().remove(playerLifes[playerLife]);
         playerLife--;
@@ -300,10 +328,8 @@ public class GameViewManager {
         }
     }
 
-
     private double calculateDistance(double x1, double x2, double y1, double y2) {
         return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
-
 
 }
