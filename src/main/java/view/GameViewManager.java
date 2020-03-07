@@ -9,7 +9,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import model.FiresOnScreen;
 import model.SHIP;
 import model.SmallInfoLabel;
 
@@ -58,12 +57,10 @@ public class GameViewManager {
 
     //weapons and shooting
     private final static String LASER_BLUE_IMAGE = "weapons/laserBlue03.png";
-    //private ImageView laserBlue;
-    private int shoot = 0;
     private boolean isSKeyPressed = false;
     List<ImageView> laserBlueList;
-//    private ImageView laserBlue;
-
+    private double shipCoordinateX;
+    private double shipCoordinateY;
 
     public GameViewManager() {
         initializeStage();
@@ -114,7 +111,7 @@ public class GameViewManager {
         createBackground();
         createShip(choosenShip);
         createGameElements(choosenShip);
-        createShooting2();
+        createShooting();
         createGameLoop();
         gameStage.show();
     }
@@ -151,67 +148,38 @@ public class GameViewManager {
         }
     }
 
-    private void createShooting2() {
+    private void createShooting() {
         laserBlueList = new ArrayList<>();
     }
 
-    private void shooting2() {
+    private double getCoordinatesShipX() {
+        this.shipCoordinateX = ship.getLayoutX();
+        return shipCoordinateX;
+    }
+
+    private double getCoordinatesShipY() {
+        this.shipCoordinateY = ship.getLayoutY();
+        return shipCoordinateY;
+    }
+
+    private void shooting() {
         if (isSKeyPressed) {
-            System.out.println("problem after S key");
-            System.out.println("SHIP Y: " + ship.getLayoutY());
-            System.out.println("SHIP X: " + ship.getLayoutX());
-
-
-           ImageView laserBlue = new ImageView(LASER_BLUE_IMAGE);
-            laserBlue.setLayoutY(ship.getLayoutY() - 10);
-            laserBlue.setLayoutX(ship.getImage().getWidth() / 2);
-
-            System.out.println("LASER Y: " + laserBlue.getLayoutY());
-            System.out.println("LASER X: " + laserBlue.getLayoutX());
-
-//            laserBlue.setVisible(false);
-            gamePane.getChildren().add(laserBlue);
+            ImageView laserBlue = new ImageView(LASER_BLUE_IMAGE);
+            laserBlue.setLayoutY(getCoordinatesShipY() - 10);
+            laserBlue.setLayoutX(getCoordinatesShipX() + ship.getImage().getWidth() / 2 - 4);
             laserBlueList.add(laserBlue);
-
+            gamePane.getChildren().add(laserBlue);
             isSKeyPressed = false;
         }
     }
 
-    private void moveShooting2() {
-        shooting2();
+    private void moveShooting() {
+        shooting();
         for (ImageView imageView : laserBlueList) {
             imageView.setVisible(true);
             imageView.setLayoutY(imageView.getLayoutY() - 40);
         }
-    }
-
-
-//    private void createShooting() {
-//
-//        laserBlue = new ImageView(LASER_BLUE_IMAGE);
-//        laserBlue.setLayoutY(ship.getLayoutY() - 10);
-//        laserBlue.setLayoutX(ship.getLayoutX() + (ship.getImage().getWidth() / 2));
-//        laserBlue.setVisible(false);
-//        gamePane.getChildren().add(laserBlue);
-//    }
-
-//    private void shooting() {
-//        if (isSpacePressed) {
-//            createShooting();
-//            laserBlue.setVisible(true);
-//            isSpacePressed = false;
-//        }
-//    }
-
-//    private void moveShooting() {
-//        shooting();
-//        if (laserBlue != null) {
-//            laserBlue.setLayoutY(laserBlue.getLayoutY() - 40);
-//        }
-//    }
-
-    public ImageView getShip() {
-        return ship;
+        System.out.println(laserBlueList.size());
     }
 
     private void setNewElementPosition(ImageView image) {
@@ -266,7 +234,7 @@ public class GameViewManager {
                 checkIfElementsAreBehindTheShipAndRelocate();
                 checkIfElementsCollide();
                 moveShip();
-                moveShooting2();
+                moveShooting();
             }
         };
         gameTimer.start();
@@ -281,6 +249,7 @@ public class GameViewManager {
             if (ship.getLayoutX() > -20) {
                 ship.setLayoutX(ship.getLayoutX() - 3);
             }
+            shooting();
         }
         if (!isLeftKeyPressed && isRightKeyPressed) {
             if (angle < 30) {
@@ -290,6 +259,7 @@ public class GameViewManager {
             if (ship.getLayoutX() < 480) {
                 ship.setLayoutX(ship.getLayoutX() + 3);
             }
+            shooting();
         }
         if (isLeftKeyPressed && isRightKeyPressed) {
             if (angle < 0) {
