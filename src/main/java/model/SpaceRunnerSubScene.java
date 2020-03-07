@@ -1,12 +1,9 @@
 package model;
 
 import javafx.animation.TranslateTransition;
-import javafx.scene.Parent;
-import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import view.ViewManager;
 
@@ -24,7 +21,7 @@ public class SpaceRunnerSubScene extends SubScene {
         prefWidth(400);
 
         BackgroundImage image = new BackgroundImage(new Image(BACKGOUND_IMAGE, 600, 400, false, true),
-                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,null);
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
         AnchorPane root2 = (AnchorPane) this.getRoot();
         root2.setBackground(new Background(image));
 
@@ -37,8 +34,8 @@ public class SpaceRunnerSubScene extends SubScene {
         translateTransition.setDuration(Duration.seconds(0.3));
         translateTransition.setNode(this);
 
-        if(isHidden) {
-           translateTransition.setToX(ViewManager.MENU_BUTTONS_START_X - ViewManager.WIDTH + 210);
+        if (isHidden) {
+            translateTransition.setToX(ViewManager.MENU_BUTTONS_START_X - ViewManager.WIDTH + 210);
             isHidden = false;
         } else {
             translateTransition.setToX(0);
