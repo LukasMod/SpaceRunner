@@ -88,6 +88,7 @@ public class ViewManager {
         shipChooserSubScene.getPane().getChildren().add(chooseShipLabel);
         shipChooserSubScene.getPane().getChildren().add(createShipsToChoosen());
         shipChooserSubScene.getPane().getChildren().add(createButtonToStart());
+        shipChooserSubScene.getPane().getChildren().add(createButtonToScore());
     }
 
     private HBox createShipsToChoosen() {
@@ -132,6 +133,21 @@ public class ViewManager {
         return startButton;
     }
 
+    private SpaceRunnerButton createButtonToScore() {
+        SpaceRunnerButton scoreButton = new SpaceRunnerButton("WIN WIN");
+        scoreButton.setLayoutX(100);
+        scoreButton.setLayoutY(300);
+
+        scoreButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                    EndViewManager endViewManager = new EndViewManager();
+                    endViewManager.createWindow(mainStage);
+            }
+        });
+
+        return scoreButton;
+    }
 
     public Stage getMainStage() {
         return mainStage;
