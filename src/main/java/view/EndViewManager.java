@@ -2,22 +2,27 @@ package view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.SHIP;
-import model.SpaceRunnerButton;
+import model.*;
 
 import java.util.Random;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 public class EndViewManager {
     private AnchorPane endPane;
     private Scene endScene;
     private Stage endStage;
     private Stage mainStage;
+    private LabelYellow labelAskName;
+    private TextFieldYellow textFieldName;
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
     private static final int END_WIDTH = 400;
     private static final int End_HEIGHT = 200;
@@ -42,7 +47,24 @@ public class EndViewManager {
         this.mainStage.hide();
         createBackground();
         createButton();
+        createTextField();
         endStage.show();
+    }
+
+    private void createTextField() {
+        textFieldName = new TextFieldYellow(300, 50);
+        textFieldName.setLayoutX(50);
+        textFieldName.setLayoutY(50);
+        textFieldName.setAlignment(Pos.CENTER);
+        endPane.getChildren().add(textFieldName);
+
+        Pattern pattern = Pattern.compile(".{0,15}");
+        TextFormatter formatter = new TextFormatter((UnaryOperator<TextFormatter.Change>) change -> {
+            return pattern.matcher(change.getControlNewText()).matches() ? change : null;
+        });
+        textFieldName.setTextFormatter(formatter);
+
+
     }
 
     private void createBackground() {
@@ -54,8 +76,8 @@ public class EndViewManager {
 
     private void createButton() {
         SpaceRunnerButton saveButton = new SpaceRunnerButton("Save");
-        saveButton.setLayoutX(110);
-        saveButton.setLayoutY(150);
+        saveButton.setLayoutX(100);
+        saveButton.setLayoutY(120);
         endPane.getChildren().add(saveButton);
 
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
