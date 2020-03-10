@@ -34,11 +34,11 @@ public class TextFieldYellow extends TextField {
 
     }
 
-private void setLabelFont(){
-        try{
-        setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)),15));
-        }catch(FileNotFoundException e){
-        setFont(Font.font("Verdana",15));
+    private void setLabelFont() {
+        try {
+            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 15));
+        } catch (FileNotFoundException e) {
+            setFont(Font.font("Verdana", 15));
         }
-        }
-        }
+    }
+}

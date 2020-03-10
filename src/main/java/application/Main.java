@@ -2,9 +2,12 @@ package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.highscores.HighscoreManager;
+import view.EndViewManager;
 import view.ViewManager;
 
 public class Main extends Application {
+
     @Override
     public void start(Stage stage) {
         try {
@@ -17,6 +20,7 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+
 
     public static void main(String[] args) {
         launch(args);

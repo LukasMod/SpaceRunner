@@ -6,13 +6,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.*;
+import model.highscores.HighscoreManager;
 
-import java.util.Random;
+import java.io.IOException;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -64,7 +63,9 @@ public class EndViewManager {
         });
         textFieldName.setTextFormatter(formatter);
 
-
+    }
+    private String getTextField () {
+       return textFieldName.getText();
     }
 
     private void createBackground() {
@@ -83,10 +84,22 @@ public class EndViewManager {
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                try {
+                    saveHighscore();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 endStage.close();
                 mainStage.show();
             }
         });
+    }
+
+    public void saveHighscore() throws IOException {
+        HighscoreManager highscoreManager = new HighscoreManager();
+        GameViewManager gameViewManager = new GameViewManager();
+        highscoreManager.addScore(getTextField(), gameViewManager.getPoints());
+        System.out.println(highscoreManager.getHighscoreString());
     }
 }
 
