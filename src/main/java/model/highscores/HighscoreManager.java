@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public class HighscoreManager {
 
-    private ArrayList<Score> scoreArrayList;
+    public ArrayList<Score> scoreArrayList;
     private static final String HIGHSCORE_FILE = "scores.dat";
 
     String highscoreString = "";
@@ -19,8 +19,9 @@ public class HighscoreManager {
         scoreArrayList = new ArrayList<>();
     }
 
-    private ArrayList<Score> getScoreArrayList() {
+    public ArrayList<Score> getScoreArrayList() {
         loadScoreFile();
+        sort();
         sort();
         return scoreArrayList;
     }
@@ -55,6 +56,8 @@ public class HighscoreManager {
     public void addScore(String name, int score) throws IOException {
         loadScoreFile();
         scoreArrayList.add(new Score(name, score));
+        scoreArrayList.add(new Score("Iga", 215000000));
+        scoreArrayList.add(new Score("jack", 100));
         updateScoreFile();
         createTxtFile();
     }
@@ -85,8 +88,9 @@ public class HighscoreManager {
     public void createTxtFile() throws IOException {
         FileWriter fileWriter = new FileWriter("highscore.txt");
         try {
+            sort();
             for (int i = 0; i < scoreArrayList.size(); i++) {
-                String str = scoreArrayList.get(i).toString();
+                String str =  (i+1) + ". " + scoreArrayList.get(i).toString();
                 fileWriter.write(str);
                 if (i < scoreArrayList.size() - 1) {
                     fileWriter.write("\n");
@@ -122,4 +126,5 @@ public class HighscoreManager {
         }
         return highscoreString;
     }
+
 }

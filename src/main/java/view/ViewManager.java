@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.*;
+import model.highscores.Score;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class ViewManager {
 
     List<SpaceRunnerButton> menuButtons;
 
-    List<ShipPicker> shipPickerList;
+    List<ShipPickerSceneManager> shipPickerSceneManagerList;
     private SHIP choosenShip;
 
     public ViewManager() {
@@ -70,12 +72,13 @@ public class ViewManager {
         helpSubScene = new SpaceRunnerSubScene();
         mainPane.getChildren().add(helpSubScene);
 
-        scoresSubScene = new SpaceRunnerSubScene();
-        mainPane.getChildren().add(scoresSubScene);
+//        scoresSubScene = new SpaceRunnerSubScene();
+//        mainPane.getChildren().add(scoresSubScene);
 //          osobna metoda:
 //      shipChooserSubScene = new SpaceRunnerSubScene();
 //      mainPane.getChildren().add(shipChooserSubScene);
         createShipChooserSubScene();
+        createScoresSubScene();
 
     }
 
@@ -91,18 +94,34 @@ public class ViewManager {
         shipChooserSubScene.getPane().getChildren().add(createButtonToScore());
     }
 
+    private void createScoresSubScene() {
+        scoresSubScene = new SpaceRunnerSubScene();
+        mainPane.getChildren().add(scoresSubScene);
+
+        InfoLabel scoreboardLabel = new InfoLabel("SCOREBOARD");
+        scoreboardLabel.setLayoutX(110);
+        scoreboardLabel.setLayoutY(25);
+        scoresSubScene.getPane().getChildren().add(scoreboardLabel);
+
+        ScoreboardSceneManager scoreboardSceneManager = new ScoreboardSceneManager();
+        scoreboardSceneManager.setLayoutX(50);
+        scoreboardSceneManager.setLayoutY(110);
+
+        scoresSubScene.getPane().getChildren().add(scoreboardSceneManager);
+    }
+
     private HBox createShipsToChoosen() {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
-        shipPickerList = new ArrayList<>();
+        shipPickerSceneManagerList = new ArrayList<>();
         for (SHIP ship : SHIP.values()) {
-            ShipPicker shipToPick = new ShipPicker(ship);
-            shipPickerList.add(shipToPick);
+            ShipPickerSceneManager shipToPick = new ShipPickerSceneManager(ship);
+            shipPickerSceneManagerList.add(shipToPick);
             hBox.getChildren().add(shipToPick);
             shipToPick.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    for (ShipPicker ship : shipPickerList) {
+                    for (ShipPickerSceneManager ship : shipPickerSceneManagerList) {
                         ship.setIsCircleChoosen(false);
                     }
                     shipToPick.setIsCircleChoosen(true);

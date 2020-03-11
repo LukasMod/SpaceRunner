@@ -1,11 +1,12 @@
-package model;
+package view;
 
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import model.SHIP;
 
-public class ShipPicker extends VBox {
+public class ShipPickerSceneManager extends VBox {
 
     private ImageView circleImage;
     private ImageView shipImage;
@@ -16,7 +17,7 @@ public class ShipPicker extends VBox {
     private SHIP ship;
     private Boolean isCircleChoosen;
 
-    public ShipPicker(SHIP ship) {
+    public ShipPickerSceneManager(SHIP ship) {
         circleImage = new ImageView(CIRCLE_NOT_CHOOSEN);
         shipImage = new ImageView(ship.getUrl());
         this.ship = ship;
