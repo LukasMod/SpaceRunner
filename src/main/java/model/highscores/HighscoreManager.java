@@ -17,11 +17,12 @@ public class HighscoreManager {
 
     public HighscoreManager() {
         scoreArrayList = new ArrayList<>();
+//        this.scoreModel = new ScoreModel();
+//        this.scoreModel.init();
     }
 
     public ArrayList<Score> getScoreArrayList() {
         loadScoreFile();
-        sort();
         sort();
         return scoreArrayList;
     }
@@ -66,9 +67,6 @@ public class HighscoreManager {
         try {
             objectOutputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
             objectOutputStream.writeObject(scoreArrayList);
-//            for (int i = 0; i < scoreArrayList.size(); i++) {
-//                objectOutputStream.writeObject(scoreArrayList.get(i));
-//            }
         } catch (FileNotFoundException e) {
             System.out.println("[Update] FNF Error" + e.getMessage() + ", the program will try and make a new file");
         } catch (IOException e) {
@@ -76,7 +74,6 @@ public class HighscoreManager {
         } finally {
             try {
                 if (objectOutputStream != null) {
-                    //  objectOutputStream.flush();  -already in close()
                     objectOutputStream.close();
                 }
             } catch (IOException e) {

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.*;
 import model.highscores.Score;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class ViewManager {
     List<ShipPickerSceneManager> shipPickerSceneManagerList;
     private SHIP choosenShip;
 
-    public ViewManager() {
+    public ViewManager() throws IOException {
         menuButtons = new ArrayList<>();
         mainPane = new AnchorPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
@@ -65,7 +66,7 @@ public class ViewManager {
     }
 
 
-    private void createSubScene() {
+    private void createSubScene() throws IOException {
         creditsSubScene = new SpaceRunnerSubScene();
         mainPane.getChildren().add(creditsSubScene);
 
@@ -94,7 +95,7 @@ public class ViewManager {
         shipChooserSubScene.getPane().getChildren().add(createButtonToScore());
     }
 
-    private void createScoresSubScene() {
+    private void createScoresSubScene() throws IOException {
         scoresSubScene = new SpaceRunnerSubScene();
         mainPane.getChildren().add(scoresSubScene);
 

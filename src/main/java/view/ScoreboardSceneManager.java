@@ -1,16 +1,13 @@
 package view;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import model.SHIP;
 import model.highscores.HighscoreManager;
 import model.highscores.Score;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ScoreboardSceneManager extends TableView<Score> {
@@ -19,11 +16,11 @@ public class ScoreboardSceneManager extends TableView<Score> {
     private ImageView shipImage;
     private HighscoreManager highscoreManager;
 
-    public ScoreboardSceneManager() {
+    public ScoreboardSceneManager() throws IOException {
         buildScoreboard();
     }
 
-    private void buildScoreboard() {
+    private void buildScoreboard() throws IOException {
         setPrefWidth(500);
         setPrefHeight(250);
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -43,13 +40,20 @@ public class ScoreboardSceneManager extends TableView<Score> {
         getColumns().add(columnName);
         getColumns().add(columnScore);
 
-        getItems().add(new Score("Johny", 20));
-        getItems().add(new Score("Anna", 30));
-        getItems().add(new Score("Brad", 10));
+        uploadScoreboard();
     }
 
     private void uploadScoreboard() {
-        highscoreManager.getScoreArrayList();
+        HighscoreManager highscoreManager = new HighscoreManager();
+        ArrayList<Score> uploadScoreArrayList = highscoreManager.getScoreArrayList();
+        if (uploadScoreArrayList != null) {
+            for (int i = 0; i < uploadScoreArrayList.size(); i++) {
+                getItems().add(new Score(uploadScoreArrayList.get(i).getName(), uploadScoreArrayList.get(i).getScore()));
+            }
+        } else {
+            System.out.println("Problem z pobieraniem listy");
+        }
+
     }
 
 
