@@ -1,13 +1,16 @@
 package model.highscores;
 
+import view.ScoreboardSceneManager;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class HighscoreManager {
 
+    public static final String HIGHSCORE_TXT = "highscore.txt";
     public ArrayList<Score> scoreArrayList;
-    private static final String HIGHSCORE_FILE = "scores.dat";
+    private static final String HIGHSCORE_DAT = "highscore.dat";
 
     String highscoreString = "";
     static int max = 100;
@@ -17,8 +20,6 @@ public class HighscoreManager {
 
     public HighscoreManager() {
         scoreArrayList = new ArrayList<>();
-//        this.scoreModel = new ScoreModel();
-//        this.scoreModel.init();
     }
 
     public ArrayList<Score> getScoreArrayList() {
@@ -27,67 +28,83 @@ public class HighscoreManager {
         return scoreArrayList;
     }
 
+    public void setScoreArrayList(ArrayList<Score> scoreArrayList) {
+        this.scoreArrayList = scoreArrayList;
+    }
+
     private void sort() {
         ScoreComparator comparator = new ScoreComparator();
         Collections.sort(scoreArrayList, comparator);
     }
 
-    public void loadScoreFile() {
+    public ArrayList<Score> loadScoreFile() {
         try {
-            objectInputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_FILE));
+            objectInputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_DAT));
             scoreArrayList = (ArrayList<Score>) objectInputStream.readObject();
+            System.out.println("CHECKPOINT loadScoreFile:. Ilość elem.: " + scoreArrayList.size());
+            System.out.println(scoreArrayList);
+
         } catch (FileNotFoundException e) {
-            System.out.println("[Load] FNF Error" + e.getMessage());
+            System.out.println("[Load] FNF Error 'loadScoreFile Error': " + e.getMessage());
         } catch (IOException e) {
-            System.out.println("[Load] IO Error" + e.getMessage());
+            System.out.println("[Load] IO Error 'loadScoreFile Error': " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println("[Load] CNF Error" + e.getMessage());
+            System.out.println("[Load] CNF Error 'loadScoreFile Error': " + e.getMessage());
         } finally {
             try {
                 if (objectOutputStream != null) {
-                    //   objectOutputStream.flush();  -already in close()
+                   objectOutputStream.flush();
                     objectOutputStream.close();
                 }
             } catch (IOException e) {
-                System.out.println("[Load] IO Error" + e.getMessage());
+                System.out.println("[Load] IO Error 'loadScoreFile Error': " + e.getMessage());
             }
         }
+        return scoreArrayList;
     }
 
-    public void addScore(String name, int score) throws IOException {
+    public void addScore(Score score) throws IOException {
+
         loadScoreFile();
-        scoreArrayList.add(new Score(name, score));
-        scoreArrayList.add(new Score("Iga", 215000000));
-        scoreArrayList.add(new Score("jack", 100));
+//
+        scoreArrayList.add(score);
+        System.out.println("CHECKPOINT pozycja z ręki zapisana: " + score +" tablica ilosc elem: "  + scoreArrayList.size());
+        System.out.println("tablica: "  + scoreArrayList);
+        setScoreArrayList(scoreArrayList);
         updateScoreFile();
         createTxtFile();
+        ScoreboardSceneManager scoreboardSceneManager = new ScoreboardSceneManager();
+        scoreboardSceneManager.fillTable();
+
+//        loadScoreFile();
     }
 
     private void updateScoreFile() {
         try {
-            objectOutputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_FILE));
+            objectOutputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_DAT));
             objectOutputStream.writeObject(scoreArrayList);
+            System.out.println("zapisane w .dat, ilość elem w liście: " + scoreArrayList.size());
         } catch (FileNotFoundException e) {
             System.out.println("[Update] FNF Error" + e.getMessage() + ", the program will try and make a new file");
         } catch (IOException e) {
-            System.out.println("[Update] IO Error" + e.getMessage());
+            System.out.println("[Update] IO Error 'updateScoreFile Error':" + e.getMessage());
         } finally {
             try {
                 if (objectOutputStream != null) {
                     objectOutputStream.close();
                 }
             } catch (IOException e) {
-                System.out.println("[Update] IO Error" + e.getMessage());
+                System.out.println("[Update] IO Error 'updateScoreFile Error': " + e.getMessage());
             }
         }
     }
 
     public void createTxtFile() throws IOException {
-        FileWriter fileWriter = new FileWriter("highscore.txt");
+        FileWriter fileWriter = new FileWriter(HIGHSCORE_TXT);
         try {
             sort();
             for (int i = 0; i < scoreArrayList.size(); i++) {
-                String str =  (i+1) + ". " + scoreArrayList.get(i).toString();
+                String str = (i + 1) + ". " + scoreArrayList.get(i).toString();
                 fileWriter.write(str);
                 if (i < scoreArrayList.size() - 1) {
                     fileWriter.write("\n");
@@ -97,18 +114,15 @@ public class HighscoreManager {
             e.getMessage();
         } finally {
             try {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
+                fileWriter.close();
             } catch (IOException e) {
-                System.out.println("[Update] IO Error" + e.getMessage());
+                System.out.println("[Update] IO Error 'createTxtFile Error': " + e.getMessage());
             }
         }
 
     }
 
     public String getHighscoreString() {
-        ArrayList<Score> scoreArrayList;
         scoreArrayList = getScoreArrayList();
 
         int i = 0;

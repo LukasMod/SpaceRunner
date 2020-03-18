@@ -7,7 +7,6 @@ import javafx.scene.image.ImageView;
 import model.highscores.HighscoreManager;
 import model.highscores.Score;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ScoreboardSceneManager extends TableView<Score> {
@@ -16,11 +15,12 @@ public class ScoreboardSceneManager extends TableView<Score> {
     private ImageView shipImage;
     private HighscoreManager highscoreManager;
 
-    public ScoreboardSceneManager() throws IOException {
+    public ScoreboardSceneManager() {
         buildScoreboard();
+        System.out.println("konstruktor ScoreboardSceneManager");
     }
 
-    private void buildScoreboard() throws IOException {
+    public void buildScoreboard() {
         setPrefWidth(500);
         setPrefHeight(250);
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -40,21 +40,22 @@ public class ScoreboardSceneManager extends TableView<Score> {
         getColumns().add(columnName);
         getColumns().add(columnScore);
 
-        uploadScoreboard();
+        fillTable();
+        System.out.println("buildScoreboard: ");
     }
 
-    private void uploadScoreboard() {
+    public void fillTable() {
         HighscoreManager highscoreManager = new HighscoreManager();
+
         ArrayList<Score> uploadScoreArrayList = highscoreManager.getScoreArrayList();
-        if (uploadScoreArrayList != null) {
-            for (int i = 0; i < uploadScoreArrayList.size(); i++) {
-                getItems().add(new Score(uploadScoreArrayList.get(i).getName(), uploadScoreArrayList.get(i).getScore()));
-            }
-        } else {
-            System.out.println("Problem z pobieraniem listy");
+        System.out.println("fillTable ilość elem: " + uploadScoreArrayList.size());
+        refresh();
+
+
+        for (int i = 0; i < uploadScoreArrayList.size(); i++) {
+            getItems().add(new Score(uploadScoreArrayList.get(i).getName(), uploadScoreArrayList.get(i).getScore()));
         }
 
     }
-
 
 }

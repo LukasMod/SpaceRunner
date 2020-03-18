@@ -10,8 +10,10 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.*;
 import model.highscores.HighscoreManager;
+import model.highscores.Score;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -27,6 +29,8 @@ public class EndViewManager {
     private static final int End_HEIGHT = 200;
 
     private SpaceRunnerButton saveButton;
+    private HighscoreManager highscoreManager;
+    private GameViewManager gameViewManager;
 
     public EndViewManager() {
         initializeStage();
@@ -51,7 +55,7 @@ public class EndViewManager {
     }
 
     private void createTextField() {
-        textFieldName = new TextFieldYellow(300, 50);
+        textFieldName = new TextFieldYellow(300, 50, "Write your name here");
         textFieldName.setLayoutX(50);
         textFieldName.setLayoutY(50);
         textFieldName.setAlignment(Pos.CENTER);
@@ -64,8 +68,13 @@ public class EndViewManager {
         textFieldName.setTextFormatter(formatter);
 
     }
-    private String getTextField () {
-       return textFieldName.getText();
+
+    public String getTextField() {
+        return textFieldName.getText();
+    }
+
+    public void setTextFieldName(TextFieldYellow textFieldName) {
+        this.textFieldName = textFieldName;
     }
 
     private void createBackground() {
@@ -77,6 +86,7 @@ public class EndViewManager {
 
     private void createButton() {
         SpaceRunnerButton saveButton = new SpaceRunnerButton("Save");
+
         saveButton.setLayoutX(100);
         saveButton.setLayoutY(120);
         endPane.getChildren().add(saveButton);
@@ -89,6 +99,7 @@ public class EndViewManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 endStage.close();
                 mainStage.show();
             }
@@ -97,9 +108,9 @@ public class EndViewManager {
 
     public void saveHighscore() throws IOException {
         HighscoreManager highscoreManager = new HighscoreManager();
-        GameViewManager gameViewManager = new GameViewManager();
-        highscoreManager.addScore(getTextField(), gameViewManager.getPoints());
-        System.out.println(highscoreManager.getHighscoreString());
+        Score newScore = new Score("test", 222);
+        highscoreManager.addScore(newScore);
+
     }
 }
 

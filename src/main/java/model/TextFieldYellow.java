@@ -21,7 +21,7 @@ public class TextFieldYellow extends TextField {
 
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
 
-    public TextFieldYellow(int prefWidth, int prefHeight) {
+    public TextFieldYellow(int prefWidth, int prefHeight, String text) {
         setPrefWidth(prefWidth);
         setPrefHeight(prefHeight);
         BackgroundImage backgroundImage = new BackgroundImage(new Image("yellow_button01.png", prefWidth, prefHeight, false, true),
@@ -30,7 +30,7 @@ public class TextFieldYellow extends TextField {
         setAlignment(Pos.CENTER_LEFT);
         setPadding(new Insets(10, 10, 10, 10));
         setLabelFont();
-        setPromptText("Write your name here");
+        setPromptText(text);
 
     }
 
