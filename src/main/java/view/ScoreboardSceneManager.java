@@ -3,7 +3,6 @@ package view;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import model.highscores.HighscoreManager;
 import model.highscores.Score;
 
@@ -11,16 +10,20 @@ import java.util.ArrayList;
 
 public class ScoreboardSceneManager extends TableView<Score> {
 
-    private ImageView circleImage;
-    private ImageView shipImage;
+    public ArrayList<Score> uploadScoreArrayList;
     private HighscoreManager highscoreManager;
 
-    public ScoreboardSceneManager() {
-        buildScoreboard();
-        System.out.println("konstruktor ScoreboardSceneManager");
+
+    public ScoreboardSceneManager(HighscoreManager highscoreManager) {
+        this.highscoreManager = highscoreManager;
     }
 
-    public void buildScoreboard() {
+    public void createScoreboard() {
+        createTable();
+        highscoreManager.loadScoreFile();
+    }
+
+    public void createTable() {
         setPrefWidth(500);
         setPrefHeight(250);
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -37,25 +40,20 @@ public class ScoreboardSceneManager extends TableView<Score> {
         columnScore.setPrefWidth(250);
         columnScore.setSortable(false);
 
+//        columnName.setStyle("-fx-background-color: #ffcc00;");
+//        columnScore.setStyle("-fx-background-color: #ffcc00;");
+//        columnName.setStyle("src/main/resources/Style.css");
+
+
         getColumns().add(columnName);
         getColumns().add(columnScore);
-
-        fillTable();
-        System.out.println("buildScoreboard: ");
     }
 
+
     public void fillTable() {
-        HighscoreManager highscoreManager = new HighscoreManager();
-
-        ArrayList<Score> uploadScoreArrayList = highscoreManager.getScoreArrayList();
-        System.out.println("fillTable ilość elem: " + uploadScoreArrayList.size());
-        refresh();
-
-
-        for (int i = 0; i < uploadScoreArrayList.size(); i++) {
-            getItems().add(new Score(uploadScoreArrayList.get(i).getName(), uploadScoreArrayList.get(i).getScore()));
-        }
-
+        this.uploadScoreArrayList = highscoreManager.getScoreArrayList();
+        getItems().clear();
+        getItems().addAll(uploadScoreArrayList);
     }
 
 }

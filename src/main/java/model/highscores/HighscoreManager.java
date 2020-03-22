@@ -1,7 +1,5 @@
 package model.highscores;
 
-import view.ScoreboardSceneManager;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,10 +26,6 @@ public class HighscoreManager {
         return scoreArrayList;
     }
 
-    public void setScoreArrayList(ArrayList<Score> scoreArrayList) {
-        this.scoreArrayList = scoreArrayList;
-    }
-
     private void sort() {
         ScoreComparator comparator = new ScoreComparator();
         Collections.sort(scoreArrayList, comparator);
@@ -53,7 +47,7 @@ public class HighscoreManager {
         } finally {
             try {
                 if (objectOutputStream != null) {
-                   objectOutputStream.flush();
+                    objectOutputStream.flush();
                     objectOutputStream.close();
                 }
             } catch (IOException e) {
@@ -63,27 +57,16 @@ public class HighscoreManager {
         return scoreArrayList;
     }
 
-    public void addScore(Score score) throws IOException {
-
-        loadScoreFile();
-//
-        scoreArrayList.add(score);
-        System.out.println("CHECKPOINT pozycja z ręki zapisana: " + score +" tablica ilosc elem: "  + scoreArrayList.size());
-        System.out.println("tablica: "  + scoreArrayList);
-        setScoreArrayList(scoreArrayList);
+    public void saveNewScore(Score newScore) throws IOException {
+        scoreArrayList.add(newScore);
         updateScoreFile();
         createTxtFile();
-        ScoreboardSceneManager scoreboardSceneManager = new ScoreboardSceneManager();
-        scoreboardSceneManager.fillTable();
-
-//        loadScoreFile();
     }
 
     private void updateScoreFile() {
         try {
             objectOutputStream = new ObjectOutputStream(new FileOutputStream(HIGHSCORE_DAT));
             objectOutputStream.writeObject(scoreArrayList);
-            System.out.println("zapisane w .dat, ilość elem w liście: " + scoreArrayList.size());
         } catch (FileNotFoundException e) {
             System.out.println("[Update] FNF Error" + e.getMessage() + ", the program will try and make a new file");
         } catch (IOException e) {

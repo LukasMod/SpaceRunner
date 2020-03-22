@@ -10,8 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.*;
-import model.highscores.Score;
+import model.InfoLabel;
+import model.SHIP;
+import model.SpaceRunnerButton;
+import model.SpaceRunnerSubScene;
+import model.highscores.HighscoreManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +39,14 @@ public class ViewManager {
 
     private SpaceRunnerSubScene sceneToHide;
 
-    List<SpaceRunnerButton> menuButtons;
+    private GameViewManager gameViewManager = new GameViewManager();
+    private HighscoreManager highscoreManager = new HighscoreManager();
+    private EndViewManager endViewManager = new EndViewManager(gameViewManager, highscoreManager);
+    private ScoreboardSceneManager scoreboardSceneManager = new ScoreboardSceneManager(highscoreManager);
 
+    List<SpaceRunnerButton> menuButtons;
     List<ShipPickerSceneManager> shipPickerSceneManagerList;
+
     private SHIP chosenShip;
 
     public ViewManager() {
@@ -63,7 +71,7 @@ public class ViewManager {
         sceneToHide = subScene;
     }
 
-    private void createSubScene() {
+    public void createSubScene() {
         creditsSubScene = new SpaceRunnerSubScene();
         mainPane.getChildren().add(creditsSubScene);
 
@@ -83,8 +91,8 @@ public class ViewManager {
         chooseShipLabel.setLayoutY(25);
         shipChooserSubScene.getPane().getChildren().add(chooseShipLabel);
         shipChooserSubScene.getPane().getChildren().add(createShipsToChoose());
-        shipChooserSubScene.getPane().getChildren().add(createButtonToStart());
-        shipChooserSubScene.getPane().getChildren().add(createButtonToScore());
+        shipChooserSubScene.getPane().getChildren().add(createButtonToStart(gameViewManager));
+        shipChooserSubScene.getPane().getChildren().add(createButtonToScore(endViewManager));
     }
 
     private void createScoresSubScene() {
@@ -96,9 +104,9 @@ public class ViewManager {
         scoreboardLabel.setLayoutY(25);
         scoresSubScene.getPane().getChildren().add(scoreboardLabel);
 
-        ScoreboardSceneManager scoreboardSceneManager = new ScoreboardSceneManager();
         scoreboardSceneManager.setLayoutX(50);
         scoreboardSceneManager.setLayoutY(110);
+        scoreboardSceneManager.createScoreboard();
 
         scoresSubScene.getPane().getChildren().add(scoreboardSceneManager);
     }
@@ -127,7 +135,7 @@ public class ViewManager {
         return hBox;
     }
 
-    private SpaceRunnerButton createButtonToStart() {
+    private SpaceRunnerButton createButtonToStart(GameViewManager gameViewManager) {
         SpaceRunnerButton startButton = new SpaceRunnerButton("START");
         startButton.setLayoutX(350);
         startButton.setLayoutY(300);
@@ -136,7 +144,6 @@ public class ViewManager {
             @Override
             public void handle(ActionEvent event) {
                 if (chosenShip != null) {
-                    GameViewManager gameViewManager = new GameViewManager();
                     gameViewManager.createNewGame(mainStage, chosenShip);
                 }
             }
@@ -145,15 +152,15 @@ public class ViewManager {
         return startButton;
     }
 
-    private SpaceRunnerButton createButtonToScore() {
-        SpaceRunnerButton scoreButton = new SpaceRunnerButton("WIN WIN");
+    private SpaceRunnerButton createButtonToScore(EndViewManager endViewManager) {
+//        this.endViewManager = endViewManager;
+        SpaceRunnerButton scoreButton = new SpaceRunnerButton("Add score");
         scoreButton.setLayoutX(100);
         scoreButton.setLayoutY(300);
 
         scoreButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                EndViewManager endViewManager = new EndViewManager();
                 endViewManager.createWindow(mainStage);
             }
         });
@@ -199,6 +206,7 @@ public class ViewManager {
             @Override
             public void handle(ActionEvent event) {
                 showSubScene(scoresSubScene);
+                scoreboardSceneManager.fillTable();
             }
         });
     }
@@ -210,8 +218,6 @@ public class ViewManager {
             @Override
             public void handle(ActionEvent event) {
                 showSubScene(helpSubScene);
-//                ScoreboardSceneManager scoreboardSceneManager =new ScoreboardSceneManager();
-//                scoreboardSceneManager.getItems().add(new Score("endrju", 6969));
             }
         });
     }

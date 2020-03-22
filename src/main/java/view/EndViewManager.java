@@ -8,12 +8,13 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.*;
+import model.LabelYellow;
+import model.SpaceRunnerButton;
+import model.TextFieldYellow;
 import model.highscores.HighscoreManager;
 import model.highscores.Score;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -22,7 +23,6 @@ public class EndViewManager {
     private Scene endScene;
     private Stage endStage;
     private Stage mainStage;
-    private LabelYellow labelAskName;
     private TextFieldYellow textFieldName;
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
     private static final int END_WIDTH = 400;
@@ -32,7 +32,10 @@ public class EndViewManager {
     private HighscoreManager highscoreManager;
     private GameViewManager gameViewManager;
 
-    public EndViewManager() {
+
+    public EndViewManager(GameViewManager gameViewManager, HighscoreManager highscoreManager) {
+        this.gameViewManager = gameViewManager;
+        this.highscoreManager = highscoreManager;
         initializeStage();
     }
 
@@ -73,10 +76,6 @@ public class EndViewManager {
         return textFieldName.getText();
     }
 
-    public void setTextFieldName(TextFieldYellow textFieldName) {
-        this.textFieldName = textFieldName;
-    }
-
     private void createBackground() {
         Image backgroundImage = new Image("purple.png", 256, 256, false, true);
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT,
@@ -94,8 +93,9 @@ public class EndViewManager {
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 try {
-                    saveHighscore();
+                    highscoreManager.saveNewScore(getNewScore());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -106,11 +106,9 @@ public class EndViewManager {
         });
     }
 
-    public void saveHighscore() throws IOException {
-        HighscoreManager highscoreManager = new HighscoreManager();
-        Score newScore = new Score("test", 222);
-        highscoreManager.addScore(newScore);
-
+    public Score getNewScore() {
+        Score newScore = new Score(getTextField(), gameViewManager.getPoints());
+        return newScore;
     }
 }
 
