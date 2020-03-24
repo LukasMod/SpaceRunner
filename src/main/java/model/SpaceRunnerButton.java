@@ -28,7 +28,6 @@ public class SpaceRunnerButton extends Button {
     private void setButtonFont() {
         try {
             setFont(Font.loadFont(new FileInputStream(FONT_PATH), 23));
-
         } catch (FileNotFoundException e) {
              e.printStackTrace();
             System.out.println("Loading font problem. Font set to Verdana\"");

@@ -1,10 +1,14 @@
 package view;
 
+import javafx.css.PseudoClass;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import model.highscores.HighscoreManager;
 import model.highscores.Score;
+import model.highscores.SpaceRunnerColumn;
 
 import java.util.ArrayList;
 
@@ -27,26 +31,19 @@ public class ScoreboardSceneManager extends TableView<Score> {
         setPrefWidth(500);
         setPrefHeight(250);
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        getStyleClass().add("TableScoreboard");
 
-        TableColumn<Score, String> columnName = new TableColumn<>("Name");
+        SpaceRunnerColumn<Score, String> columnName = new SpaceRunnerColumn<>();
         columnName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        columnName.setResizable(false);
-        columnName.setPrefWidth(250);
-        columnName.setSortable(false);
 
-        TableColumn<Score, Integer> columnScore = new TableColumn<>("Score");
+        SpaceRunnerColumn<Score, Integer> columnScore = new SpaceRunnerColumn<>();
         columnScore.setCellValueFactory(new PropertyValueFactory<>("score"));
-        columnScore.setResizable(false);
-        columnScore.setPrefWidth(250);
-        columnScore.setSortable(false);
-
-//        columnName.setStyle("-fx-background-color: #ffcc00;");
-//        columnScore.setStyle("-fx-background-color: #ffcc00;");
-//        columnName.setStyle("src/main/resources/Style.css");
 
 
         getColumns().add(columnName);
         getColumns().add(columnScore);
+
+
     }
 
 

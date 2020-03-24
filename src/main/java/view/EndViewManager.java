@@ -28,7 +28,6 @@ public class EndViewManager {
     private static final int END_WIDTH = 400;
     private static final int End_HEIGHT = 200;
 
-    private SpaceRunnerButton saveButton;
     private HighscoreManager highscoreManager;
     private GameViewManager gameViewManager;
 

@@ -1,5 +1,6 @@
 package view;
 
+import application.Main;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -53,8 +54,12 @@ public class ViewManager {
         menuButtons = new ArrayList<>();
         mainPane = new AnchorPane();
         mainScene = new Scene(mainPane, WIDTH, HEIGHT);
+        mainScene.getStylesheets().add("Style.css");
+
+
         mainStage = new Stage();
         mainStage.setScene(mainScene);
+
 
         createSubScene();
         createButtons();
@@ -207,6 +212,7 @@ public class ViewManager {
             public void handle(ActionEvent event) {
                 showSubScene(scoresSubScene);
                 scoreboardSceneManager.fillTable();
+
             }
         });
     }
