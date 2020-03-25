@@ -1,14 +1,11 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.LabelYellow;
 import model.SpaceRunnerButton;
 import model.TextFieldYellow;
 import model.highscores.HighscoreManager;
@@ -20,16 +17,17 @@ import java.util.regex.Pattern;
 
 public class EndViewManager {
     private AnchorPane endPane;
-    private Scene endScene;
     private Stage endStage;
-    private Stage mainStage;
+
     private TextFieldYellow textFieldName;
-    private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
+
     private static final int END_WIDTH = 400;
     private static final int End_HEIGHT = 200;
 
+
     private HighscoreManager highscoreManager;
     private GameViewManager gameViewManager;
+    private ViewManager viewManager;
 
 
     public EndViewManager(GameViewManager gameViewManager, HighscoreManager highscoreManager) {
@@ -40,16 +38,14 @@ public class EndViewManager {
 
     public void initializeStage() {
         endPane = new AnchorPane();
-        endScene = new Scene(endPane, END_WIDTH, End_HEIGHT);
+        Scene endScene = new Scene(endPane, END_WIDTH, End_HEIGHT);
         endStage = new Stage();
         endStage.setResizable(false);
         endStage.setScene(endScene);
         endStage.setTitle("Gameover");
     }
 
-    public void createWindow(Stage stage) {
-        this.mainStage = stage;
-        this.mainStage.hide();
+    public void createWindow() {
         createBackground();
         createButton();
         createTextField();
@@ -89,25 +85,22 @@ public class EndViewManager {
         saveButton.setLayoutY(120);
         endPane.getChildren().add(saveButton);
 
-        saveButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        saveButton.setOnAction(event -> {
 
-                try {
-                    highscoreManager.saveNewScore(getNewScore());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                endStage.close();
-                mainStage.show();
+            try {
+                highscoreManager.saveNewScore(getNewScore());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            endStage.close();
+            viewManager = new ViewManager();
+            viewManager.getMainStage().show();
         });
     }
 
     public Score getNewScore() {
-        Score newScore = new Score(getTextField(), gameViewManager.getPoints());
-        return newScore;
+        return new Score(getTextField(), gameViewManager.getPoints());
     }
 }
 

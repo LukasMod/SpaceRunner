@@ -11,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SHIP;
 import model.SmallInfoLabel;
+import model.highscores.HighscoreManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Random;
 
 public class GameViewManager {
 
+    private HighscoreManager highscoreManager;
     private AnchorPane gamePane;
     private Scene gameScene;
     private Stage gameStage;
@@ -70,12 +72,12 @@ public class GameViewManager {
     private double shipCoordinateX;
     private double shipCoordinateY;
 
-    public GameViewManager() {
+    public GameViewManager(HighscoreManager highscoreManager) {
+        this.highscoreManager = highscoreManager;
         initializeStage();
         createKeyListeners();
         randomPositionGenerator = new Random();
         randomMeteorsColor = new Random();
-
     }
 
     private void createKeyListeners() {
@@ -384,9 +386,11 @@ public class GameViewManager {
         gamePane.getChildren().remove(playerLifes[playerLife]);
         playerLife--;
         if (playerLife < 0) {
-            gameStage.close();
             gameTimer.stop();
-            menuStage.show();
+            EndViewManager endViewManager = new EndViewManager(this, highscoreManager);
+            endViewManager.createWindow();
+            gameStage.close();
+
         }
     }
 
@@ -398,7 +402,4 @@ public class GameViewManager {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
 }

@@ -2,16 +2,12 @@ package model.highscores;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class HighscoreManager {
 
     public static final String HIGHSCORE_TXT = "highscore.txt";
     public ArrayList<Score> scoreArrayList;
     private static final String HIGHSCORE_DAT = "highscore.dat";
-
-    String highscoreString = "";
-    static int max = 100;
 
     ObjectOutputStream objectOutputStream = null;
     ObjectInputStream objectInputStream = null;
@@ -28,10 +24,11 @@ public class HighscoreManager {
 
     private void sort() {
         ScoreComparator comparator = new ScoreComparator();
-        Collections.sort(scoreArrayList, comparator);
+        scoreArrayList.sort(comparator);
     }
 
-    public ArrayList<Score> loadScoreFile() {
+    @SuppressWarnings("unchecked")
+    public void loadScoreFile() {
         try {
             objectInputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_DAT));
             scoreArrayList = (ArrayList<Score>) objectInputStream.readObject();
@@ -54,7 +51,6 @@ public class HighscoreManager {
                 System.out.println("[Load] IO Error 'loadScoreFile Error': " + e.getMessage());
             }
         }
-        return scoreArrayList;
     }
 
     public void saveNewScore(Score newScore) throws IOException {
@@ -105,20 +101,20 @@ public class HighscoreManager {
 
     }
 
-    public String getHighscoreString() {
-        scoreArrayList = getScoreArrayList();
 
-        int i = 0;
-        int x = scoreArrayList.size();
-        if (x > max) {
-            x = max;
-        }
-        while (i < x) {
-            highscoreString += (i + 1) + ".\t" + scoreArrayList.get(i).getName() + " " +
-                    scoreArrayList.get(i).getScore() + "\n";
-            i++;
-        }
-        return highscoreString;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -10,7 +10,6 @@ import view.ViewManager;
 
 public class SpaceRunnerSubScene extends SubScene {
 
-    private final static String FONT_PATH = "src/main/resources/kenvector_future.ttf";
     private final static String BACKGOUND_IMAGE = "yellow_panel.png";
 
     private boolean isHidden = true;
