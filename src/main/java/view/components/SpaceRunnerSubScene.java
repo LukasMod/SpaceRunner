@@ -1,4 +1,4 @@
-package model;
+package view.components;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.SubScene;

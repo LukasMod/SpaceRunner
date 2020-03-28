@@ -10,8 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SHIP;
-import model.SmallInfoLabel;
-import model.highscores.HighscoreManager;
+import view.components.SmallInfoLabel;
+import model.HighscoreManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class GameViewManager {
     private Scene gameScene;
     private Stage gameStage;
 
-    private static final int GAME_WIDTH = 600;
+    private static final double GAME_WIDTH = 600;
     private static final int GAME_HEIGHT = 600;
 
     private Stage menuStage;

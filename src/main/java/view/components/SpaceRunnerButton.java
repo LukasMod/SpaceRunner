@@ -1,4 +1,4 @@
-package model;
+package view.components;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;

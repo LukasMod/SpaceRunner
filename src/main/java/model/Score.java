@@ -1,4 +1,4 @@
-package model.highscores;
+package model;
 
 import java.io.Serializable;
 

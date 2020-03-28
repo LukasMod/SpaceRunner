@@ -1,17 +1,20 @@
 package view;
 
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.InfoLabel;
+import model.LANGUAGE;
+import view.components.InfoLabel;
 import model.SHIP;
-import model.SpaceRunnerButton;
-import model.SpaceRunnerSubScene;
-import model.highscores.HighscoreManager;
+import view.components.LabelYellow;
+import view.components.SpaceRunnerButton;
+import view.components.SpaceRunnerSubScene;
+import model.HighscoreManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +30,11 @@ public class ViewManager {
     public final static int MENU_BUTTONS_START_Y = 150;
 
     private SpaceRunnerSubScene creditsSubScene;
-    private SpaceRunnerSubScene helpSubScene;
     private SpaceRunnerSubScene scoresSubScene;
     private SpaceRunnerSubScene shipChooserSubScene;
+    private SpaceRunnerSubScene optionsSubScene;
 
     private SpaceRunnerSubScene sceneToHide;
-
 
     private HighscoreManager highscoreManager = new HighscoreManager();
     private ScoreboardSceneManager scoreboardSceneManager = new ScoreboardSceneManager(highscoreManager);
@@ -40,8 +42,10 @@ public class ViewManager {
 
     List<SpaceRunnerButton> menuButtons;
     List<ShipPickerSceneManager> shipPickerSceneManagerList;
+    List<LanguageSceneManager> languagePickerSceneManagerList;
 
     private SHIP chosenShip;
+    private LANGUAGE chosenLanguage;
 
     public ViewManager() {
         menuButtons = new ArrayList<>();
@@ -49,10 +53,8 @@ public class ViewManager {
         Scene mainScene = new Scene(mainPane, WIDTH, HEIGHT);
         mainScene.getStylesheets().add("Style.css");
 
-
         mainStage = new Stage();
         mainStage.setScene(mainScene);
-
 
         createSubScene();
         createButtons();
@@ -73,12 +75,9 @@ public class ViewManager {
         creditsSubScene = new SpaceRunnerSubScene();
         mainPane.getChildren().add(creditsSubScene);
 
-        helpSubScene = new SpaceRunnerSubScene();
-        mainPane.getChildren().add(helpSubScene);
-
         createShipChooserSubScene();
         createScoresSubScene();
-
+        createOptionsChooserSubScene();
     }
 
     private void createShipChooserSubScene() {
@@ -90,6 +89,7 @@ public class ViewManager {
         shipChooserSubScene.getPane().getChildren().add(chooseShipLabel);
         shipChooserSubScene.getPane().getChildren().add(createShipsToChoose());
         shipChooserSubScene.getPane().getChildren().add(createButtonToStart(gameViewManager));
+        shipChooserSubScene.getPane().getChildren().add(createLabelHelp());
     }
 
     private void createScoresSubScene() {
@@ -108,6 +108,45 @@ public class ViewManager {
         scoresSubScene.getPane().getChildren().add(scoreboardSceneManager);
     }
 
+    private void createOptionsChooserSubScene() {
+        optionsSubScene = new SpaceRunnerSubScene();
+        mainPane.getChildren().add(optionsSubScene);
+
+        InfoLabel optionsLabel = new InfoLabel("OPTIONS");
+        optionsLabel.setLayoutX(110);
+        optionsLabel.setLayoutY(25);
+        optionsSubScene.getPane().getChildren().add(optionsLabel);
+
+        LabelYellow languageLabel = new LabelYellow("Choose language", 400, 30);
+        languageLabel.setAlignment(Pos.TOP_CENTER);
+        languageLabel.setLayoutX(100);
+        languageLabel.setLayoutY(100);
+        optionsSubScene.getPane().getChildren().add(languageLabel);
+
+        optionsSubScene.getPane().getChildren().add(createLanguageToChoose());
+    }
+
+    private HBox createLanguageToChoose() {
+        HBox hBox = new HBox();
+        hBox.setSpacing(20);
+        languagePickerSceneManagerList = new ArrayList<>();
+        for (LANGUAGE language : LANGUAGE.values()) {
+            LanguageSceneManager languageToPick = new LanguageSceneManager(language);
+            languagePickerSceneManagerList.add(languageToPick);
+            hBox.getChildren().add(languageToPick);
+            languageToPick.setOnMouseClicked(mouseEvent -> {
+                for (LanguageSceneManager language1 : languagePickerSceneManagerList) {
+                    language1.setIsCircleChosen(false);
+                }
+                languageToPick.setIsCircleChosen(true);
+                chosenLanguage = languageToPick.getLanguage();
+            });
+        }
+        hBox.setLayoutX(230);
+        hBox.setLayoutY(150);
+        return hBox;
+    }
+
     private HBox createShipsToChoose() {
         HBox hBox = new HBox();
         hBox.setSpacing(20);
@@ -118,21 +157,30 @@ public class ViewManager {
             hBox.getChildren().add(shipToPick);
             shipToPick.setOnMouseClicked(mouseEvent -> {
                 for (ShipPickerSceneManager ship1 : shipPickerSceneManagerList) {
-                    ship1.setIsCircleChoosen(false);
+                    ship1.setIsCircleChosen(false);
                 }
-                shipToPick.setIsCircleChoosen(true);
+                shipToPick.setIsCircleChosen(true);
                 chosenShip = shipToPick.getShip();
             });
         }
-        hBox.setLayoutX(300 - (118 * 2));
+        hBox.setLayoutX(70);
         hBox.setLayoutY(100);
         return hBox;
     }
 
+    private InfoLabel createLabelHelp() {
+        InfoLabel languageLabel = new InfoLabel(
+                "Type 'S' to shoot, use left-right arrows to move", 14, 49, 500);
+        languageLabel.setAlignment(Pos.CENTER);
+        languageLabel.setLayoutX(50);
+        languageLabel.setLayoutY(250);
+        return languageLabel;
+    }
+
     private SpaceRunnerButton createButtonToStart(GameViewManager gameViewManager) {
         SpaceRunnerButton startButton = new SpaceRunnerButton("START");
-        startButton.setLayoutX(350);
-        startButton.setLayoutY(300);
+        startButton.setLayoutX(355);
+        startButton.setLayoutY(320);
 
         startButton.setOnAction(event -> {
             if (chosenShip != null) {
@@ -157,7 +205,7 @@ public class ViewManager {
     public void createButtons() {
         createStartButton();
         createScoresButton();
-        createHelpButton();
+        createOptionsButton();
         createCreditsButton();
         createExitButton();
     }
@@ -179,10 +227,10 @@ public class ViewManager {
         });
     }
 
-    private void createHelpButton() {
-        SpaceRunnerButton helpButton = new SpaceRunnerButton("HELP");
-        addMenuButton(helpButton);
-        helpButton.setOnAction(event -> showSubScene(helpSubScene));
+    private void createOptionsButton() {
+        SpaceRunnerButton optionsButton = new SpaceRunnerButton("OPTIONS");
+        addMenuButton(optionsButton);
+        optionsButton.setOnAction(event -> showSubScene(optionsSubScene));
     }
 
     private void createCreditsButton() {

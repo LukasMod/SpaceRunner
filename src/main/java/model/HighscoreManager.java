@@ -1,4 +1,6 @@
-package model.highscores;
+package model;
+
+import model.utils.ScoreComparator;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,9 +1,8 @@
-package model;
+package view.components;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -14,24 +13,21 @@ import javafx.scene.text.Font;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
-public class TextFieldYellow extends TextField {
+public class SmallInfoLabel extends Label {
 
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
 
-    public TextFieldYellow(int prefWidth, int prefHeight, String text) {
-        setPrefWidth(prefWidth);
-        setPrefHeight(prefHeight);
-        BackgroundImage backgroundImage = new BackgroundImage(new Image("yellow_button01.png", prefWidth, prefHeight, false, true),
+    public SmallInfoLabel(String text) {
+        setPrefWidth(130);
+        setPrefHeight(50);
+        BackgroundImage backgroundImage = new BackgroundImage(new Image("hud/buttonBlue.png", 130, 50, false, true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
         setBackground(new Background(backgroundImage));
         setAlignment(Pos.CENTER_LEFT);
         setPadding(new Insets(10, 10, 10, 10));
         setLabelFont();
-        setPromptText(text);
-
+        setText(text);
     }
 
     private void setLabelFont() {

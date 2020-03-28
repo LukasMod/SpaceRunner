@@ -32,12 +32,8 @@ public class ShipPickerSceneManager extends VBox {
         return ship;
     }
 
-    public boolean getCircleChoosen() {
-        return isCircleChoosen;
-    }
-
-    public void setIsCircleChoosen (boolean isCircleChoosen) {
-        this.isCircleChoosen = isCircleChoosen;
+    public void setIsCircleChosen(boolean isCircleChosen) {
+        this.isCircleChoosen = isCircleChosen;
         String imageToSet = this.isCircleChoosen ? CIRCLE_CHOSEN : CIRCLE_NOT_CHOOSEN;
         circleImage.setImage(new Image(imageToSet));
     }

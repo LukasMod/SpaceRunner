@@ -1,4 +1,4 @@
-package model;
+package view.components;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -21,13 +21,24 @@ public class InfoLabel extends Label {
     public InfoLabel(String text) {
         setPrefWidth(380);
         setPrefHeight(49);
-//        setPadding(new Insets(40,40,40,40));
         setAlignment(Pos.CENTER);
         setText(text);
         setWrapText(true);
         setLabelFont();
 
         BackgroundImage backgroundImage = new BackgroundImage(new Image(BACKGROUND_IMAGE, 380, 49, false, true),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
+        setBackground(new Background(backgroundImage));
+    }
+    public InfoLabel(String text, int height, int imageHeight,int imageWidth) {
+        setPrefWidth(imageWidth);
+        setPrefHeight(imageHeight);
+        setAlignment(Pos.CENTER);
+        setText(text);
+        setWrapText(true);
+        setLabelFontHeight(height);
+
+        BackgroundImage backgroundImage = new BackgroundImage(new Image(BACKGROUND_IMAGE, imageWidth, imageHeight, false, true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, null);
         setBackground(new Background(backgroundImage));
     }
@@ -41,5 +52,13 @@ public class InfoLabel extends Label {
             setFont(Font.font("Verdana", 23));
         }
     }
-
+    private void setLabelFontHeight(int high) {
+        try {
+            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), high));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Loading font problem. Font set to Verdana\"");
+            setFont(Font.font("Verdana", high));
+        }
+    }
 }

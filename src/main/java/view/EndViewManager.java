@@ -6,10 +6,10 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.SpaceRunnerButton;
-import model.TextFieldYellow;
-import model.highscores.HighscoreManager;
-import model.highscores.Score;
+import view.components.SpaceRunnerButton;
+import view.components.TextFieldYellow;
+import model.HighscoreManager;
+import model.Score;
 
 import java.io.IOException;
 import java.util.function.UnaryOperator;

@@ -1,6 +1,5 @@
-package model.highscores;
+package view.components;
 
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 
 public class SpaceRunnerColumn<S, T> extends TableColumn<S, T> {
