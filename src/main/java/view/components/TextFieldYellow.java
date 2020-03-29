@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static model.utils.I18N.createStringBinding;
+
 public class TextFieldYellow extends TextField {
 
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
@@ -27,7 +29,7 @@ public class TextFieldYellow extends TextField {
         setAlignment(Pos.CENTER_LEFT);
         setPadding(new Insets(10, 10, 10, 10));
         setLabelFont();
-        setPromptText(text);
+        promptTextProperty().bind(createStringBinding(text));
 
     }
 

@@ -1,5 +1,6 @@
 package view.components;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -13,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static model.utils.I18N.createStringBinding;
+
 public class InfoLabel extends Label {
 
     public final static String FONT_PATH = "src/main/resources/kenvector_future.ttf";
@@ -21,8 +24,9 @@ public class InfoLabel extends Label {
     public InfoLabel(String text) {
         setPrefWidth(380);
         setPrefHeight(49);
+        setPadding(new Insets(7,7,7,7));
         setAlignment(Pos.CENTER);
-        setText(text);
+        textProperty().bind(createStringBinding(text));
         setWrapText(true);
         setLabelFont();
 
@@ -33,9 +37,10 @@ public class InfoLabel extends Label {
     public InfoLabel(String text, int height, int imageHeight,int imageWidth) {
         setPrefWidth(imageWidth);
         setPrefHeight(imageHeight);
-        setAlignment(Pos.CENTER);
-        setText(text);
+        setPadding(new Insets(7,7,7,7));
         setWrapText(true);
+        setAlignment(Pos.CENTER);
+        textProperty().bind(createStringBinding(text));
         setLabelFontHeight(height);
 
         BackgroundImage backgroundImage = new BackgroundImage(new Image(BACKGROUND_IMAGE, imageWidth, imageHeight, false, true),

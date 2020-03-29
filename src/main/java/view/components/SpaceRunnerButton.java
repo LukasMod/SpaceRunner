@@ -10,6 +10,8 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static model.utils.I18N.createStringBinding;
+
 public class SpaceRunnerButton extends Button {
 
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
@@ -17,7 +19,9 @@ public class SpaceRunnerButton extends Button {
     private final String BUTTON_RELEASED_STYLE = "-fx-background-color: transparent; -fx-background-image: url('yellow_button01.png');";
 
     public SpaceRunnerButton(String text) {
-        setText(text);
+        //        button.textProperty().bind(createStringBinding(key, args));
+
+        textProperty().bind(createStringBinding(text));
         setButtonFont();
         setPrefWidth(190);
         setPrefHeight(45);

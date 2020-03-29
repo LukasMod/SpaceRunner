@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static model.utils.I18N.createStringBinding;
+
 public class SmallInfoLabel extends Label {
 
     private final String FONT_PATH = "src/main/resources/kenvector_future.ttf";
@@ -32,9 +34,9 @@ public class SmallInfoLabel extends Label {
 
     private void setLabelFont() {
         try {
-            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 15));
+            setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 14));
         } catch (FileNotFoundException e) {
-            setFont(Font.font("Verdana", 15));
+            setFont(Font.font("Verdana", 14));
         }
     }
 }

@@ -53,7 +53,7 @@ public class EndViewManager {
     }
 
     private void createTextField() {
-        textFieldName = new TextFieldYellow(300, 50, "Write your name here");
+        textFieldName = new TextFieldYellow(300, 50, "end.view.name");
         textFieldName.setLayoutX(50);
         textFieldName.setLayoutY(50);
         textFieldName.setAlignment(Pos.CENTER);
@@ -79,7 +79,7 @@ public class EndViewManager {
     }
 
     private void createButton() {
-        SpaceRunnerButton saveButton = new SpaceRunnerButton("Save");
+        SpaceRunnerButton saveButton = new SpaceRunnerButton("save.end.view");
 
         saveButton.setLayoutX(100);
         saveButton.setLayoutY(120);

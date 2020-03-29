@@ -1,17 +1,15 @@
 package view;
 
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import model.HighscoreManager;
 import model.SHIP;
 import view.components.SmallInfoLabel;
-import model.HighscoreManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,28 +79,22 @@ public class GameViewManager {
     }
 
     private void createKeyListeners() {
-        gameScene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.LEFT) {
-                    isLeftKeyPressed = true;
-                } else if (keyEvent.getCode() == KeyCode.RIGHT) {
-                    isRightKeyPressed = true;
-                } else if (keyEvent.getCode() == KeyCode.S) {
-                    isSKeyPressed = true;
-                }
+        gameScene.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.LEFT) {
+                isLeftKeyPressed = true;
+            } else if (keyEvent.getCode() == KeyCode.RIGHT) {
+                isRightKeyPressed = true;
+            } else if (keyEvent.getCode() == KeyCode.S) {
+                isSKeyPressed = true;
             }
         });
-        gameScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.LEFT) {
-                    isLeftKeyPressed = false;
-                } else if (keyEvent.getCode() == KeyCode.RIGHT) {
-                    isRightKeyPressed = false;
-                } else if (keyEvent.getCode() == KeyCode.S) {
-                    isSKeyPressed = false;
-                }
+        gameScene.setOnKeyReleased(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.LEFT) {
+                isLeftKeyPressed = false;
+            } else if (keyEvent.getCode() == KeyCode.RIGHT) {
+                isRightKeyPressed = false;
+            } else if (keyEvent.getCode() == KeyCode.S) {
+                isSKeyPressed = false;
             }
         });
     }
@@ -132,7 +124,7 @@ public class GameViewManager {
         star = new ImageView(GOLD_STAR_IMAGE);
         setNewElementPosition(star);
         gamePane.getChildren().add(star);
-        pointsLabel = new SmallInfoLabel("POINTS : 00");
+        pointsLabel = new SmallInfoLabel("PUNKTY : 00");
         pointsLabel.setLayoutX(460);
         pointsLabel.setLayoutY(20);
         gamePane.getChildren().add(pointsLabel);
@@ -150,13 +142,13 @@ public class GameViewManager {
     private void createMeteors(int numberMeteorsAtStart) {
         meteorsList = new ArrayList<>();
         for (int i = 0; i < numberMeteorsAtStart; i++) {
-            meteorsList.add(setMeteorColor(meteors));
+            meteorsList.add(setMeteorColor());
             setNewElementPosition(meteorsList.get(i));
             gamePane.getChildren().add(meteorsList.get(i));
         }
     }
 
-    private ImageView setMeteorColor(ImageView meteors) {
+    private ImageView setMeteorColor() {
         numberMeteorsColor = randomMeteorsColor.nextInt(3);
         if (numberMeteorsColor == 0) {
             this.meteors = new ImageView(METEOR_BROWN_IMAGE);
@@ -288,7 +280,7 @@ public class GameViewManager {
                 angle = 5;
             }
             ship.setRotate(angle);
-            if (ship.getLayoutX() < 480) {
+            if (ship.getLayoutX() < 525) {
                 ship.setLayoutX(ship.getLayoutX() + 12);
             }
             shooting();
