@@ -34,8 +34,6 @@ public class HighscoreManager {
         try {
             objectInputStream = new ObjectInputStream(new FileInputStream(HIGHSCORE_DAT));
             scoreArrayList = (ArrayList<Score>) objectInputStream.readObject();
-            System.out.println("CHECKPOINT loadScoreFile:. Ilość elem.: " + scoreArrayList.size());
-            System.out.println(scoreArrayList);
 
         } catch (FileNotFoundException e) {
             System.out.println("[Load] FNF Error 'loadScoreFile Error': " + e.getMessage());
